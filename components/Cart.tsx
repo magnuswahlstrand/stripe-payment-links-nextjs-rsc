@@ -1,18 +1,20 @@
-"use  client"
 import * as React from "react"
 
 
 import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
 import {CartItem} from "@/lib/types";
-import {redirectToPaymentLink} from "@/lib/actions";
 
 type Props = {
     items: CartItem[]
-    onRemoveProduct: (product: CartItem) => void
+    onRemoveProduct: (productId: string) => void
+    redirectToPayment: (items: CartItem[]) => Promise<void>
 }
 
-function Cart({items, onRemoveProduct}: Props) {
+function Cart({items, onRemoveProduct, redirectToPayment}: Props) {
+    async function action() {
+        await redirectToPayment(items)
+    }
 
     return (
         <Card className="w-[350px]">
@@ -28,14 +30,14 @@ function Cart({items, onRemoveProduct}: Props) {
                             <li key={item.id} className="flex justify-between items-center">
                                 <div>{item.name}</div>
                                 <div>{item.quantity}</div>
-                                <div onClick={() => onRemoveProduct(item)}>x</div>
+                                <div onClick={() => onRemoveProduct(item.id)}>x</div>
                             </li>
                         ))}
                     </ul>
                 }
             </CardContent>
             <CardFooter className="flex justify-end">
-                <form action={redirectToPaymentLink}>
+                <form action={action}>
                     <Button type="submit">Go to payment</Button>
                 </form>
             </CardFooter>

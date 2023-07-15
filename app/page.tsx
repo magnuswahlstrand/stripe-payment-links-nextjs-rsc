@@ -1,39 +1,25 @@
-"use client"
+import {Product} from "@/components/Products";
+import Store from "@/components/Store";
 
-import Cart from "@/components/Cart";
-import {useState} from "react";
-import {CartItem} from "@/lib/types";
-import {Product, products, Products} from "@/components/Products";
+async function getProducts() {
+    const products: Product[] = [
+        {id: "prod_OFvGCF45oTstv1", name: "Yiga clan", description: "Poster", price: 100},
+        {id: "prod_LG9QvqtbExSfVq", name: "Cats", description: "Poster", price: 200}
+    ]
+    return products
+}
 
-export default function Home() {
-    const [items, setItems] = useState<CartItem[]>([
-        {id: "prod_OFvGCF45oTstv1", name: "Yiga clan", quantity: 1},
-    ])
-
-    const handleAddProduct = (product: Product) => {
-        const item = items.find((item) => item.id === product.id)
-        if (item) {
-            setItems(items.map((item) => {
-                if (item.id === product.id) {
-                    return {...item, quantity: item.quantity + 1}
-                }
-                return item
-            }))
-        } else {
-            setItems([...items, {id: product.id, name: product.name, quantity: 1}])
-        }
+export default async function Home() {
+    const products = await getProducts()
+    const goToCheckout = async () => {
+        "use server"
+        console.log("CHECKOUT")
     }
 
-    const handleRemoveCartItem = (item: CartItem) => {
-        setItems(items.filter((i) => i.id !== item.id))
-    }
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
-            <Cart items={items}
-                  onRemoveProduct={handleRemoveCartItem}/>
-            <Products products={products}
-                      onAddProduct={handleAddProduct}/>
+            <Store products={products} onGoToCheckout={goToCheckout}/>
         </main>
     )
 }

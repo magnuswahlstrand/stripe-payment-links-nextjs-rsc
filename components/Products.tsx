@@ -7,10 +7,7 @@ export type Product = {
     price: number
     description: string
 }
-export const products: Product[] = [
-    {id: "prod_OFvGCF45oTstv1", name: "Yiga clan", description: "Poster", price: 100},
-    {id: "prod_LG9QvqtbExSfVq", name: "Cats", description: "Poster", price: 200}
-]
+
 
 export function Products({products, onAddProduct}: {
     products: Product[]
