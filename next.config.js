@@ -2,6 +2,12 @@
 const nextConfig = {
     experimental: {
         serverActions: true,
+    },
+    images: {
+        remotePatterns: [
+            {hostname: 'via.placeholder.com'},
+            {hostname: 'placekitten.com'},
+        ],
     }
 }
 

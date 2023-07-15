@@ -35,7 +35,9 @@ function reducer(state: CartItem[], action: Action) {
 }
 
 const Store = ({products, onGoToCheckout}: Props) => {
-    const [items, dispatch] = useReducer(reducer, [])
+    const [items, dispatch] = useReducer(reducer, [
+        {id: "prod_OFvGCF45oTstv1", name: "Yiga clan", quantity: 1},
+    ])
 
     const handleRemoveItem = (id: string) => dispatch({type: 'REMOVE_ITEM', payload: {id}})
     const handleAddProduct = (product: Product) => dispatch({type: 'ADD_ITEM', payload: product})
