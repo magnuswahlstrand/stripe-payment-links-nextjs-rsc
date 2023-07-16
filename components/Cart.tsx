@@ -2,8 +2,10 @@ import * as React from "react"
 import Image from "next/image"
 
 import {Button} from "@/components/ui/button"
-import {Card,} from "@/components/ui/card"
 import {CartItem} from "@/lib/types";
+import {Sheet, SheetContent, SheetTrigger,} from "@/components/ui/sheet"
+import {ShoppingCart} from "lucide-react";
+import {Badge} from "@/components/ui/badge";
 
 type Props = {
     items: CartItem[]
@@ -39,38 +41,74 @@ function CartItemRow(props: { item: CartItem, onRemoveItem: () => void }) {
     </li>;
 }
 
-function Cart({items, onRemoveProduct, redirectToPayment}: Props) {
+
+function OpenCartButton(props: { totalQuantity: number }) {
+    return <SheetTrigger asChild>
+        <Button variant="ghost" className="py-0 w-full flex-row justify-end items-center">
+            <Badge>{props.totalQuantity}</Badge>
+            <ShoppingCart className="m-2 h-6 w-6"/> Cart
+        </Button>
+    </SheetTrigger>;
+}
+
+function CartContent({items, onRemoveProduct, redirectToPayment}: Props) {
     async function action() {
         await redirectToPayment(items)
     }
 
+    const totalPrice = items.reduce((total, item) => total + item.quantity * 100, 0)
+    const totalQuantity = items.reduce((total, item) => total + item.quantity, 0)
+
+    if (totalQuantity < 1) {
+        return <div className="text-sm text-muted-foreground flex justify-center">
+            Your cart is empty
+        </div>
+    }
+
     return (
-        <Card className="w-[500px]">
-            <div className="p-6 pb-0 text-2xl font-semibold tracking-tight">Shopping cart</div>
+        <div className="flex flex-col items-center w-96">
             <div className="px-6">
-                {items.length === 0 ?
-                    (<div className="text-center">Your cart is empty</div>)
-                    : <ul>
-                        {items.map((item) => (
-                            <CartItemRow key={item.id} item={item} onRemoveItem={() => onRemoveProduct(item.id)}/>
-                        ))}
-                    </ul>
-                }
+                <ul>
+                    {items.map((item) => (
+                        <CartItemRow key={item.id} item={item}
+                                     onRemoveItem={() => onRemoveProduct(item.id)}/>
+                    ))}
+                </ul>
             </div>
-            <div className="border border-t-1 p-6">
+            <div className="p-6">
                 <div className={"flex flex-col"}>
                     <div className="flex flex-row justify-between">
                         <div className="">Subtotal</div>
-                        <div className="">$ 100.00</div>
+                        <div className="">${totalPrice}</div>
                     </div>
-                    <div className={"text-sm text-muted-foreground"}>Taxes and shipping calculated on checkout.</div>
+                    <div className={"text-sm text-muted-foreground"}>Taxes and shipping calculated on checkout.
+                    </div>
                     <form className="w-full" action={action}>
-                        <Button className="w-full bg-indigo-700 mt-6" type="submit">Checkout</Button>
+                        <Button className="w-full bg-indigo-700 mt-6" type="submit"
+                                disabled={totalQuantity < 1}>Checkout</Button>
                     </form>
                 </div>
             </div>
-        </Card>
+        </div>
     )
 }
 
-export default Cart
+export default function WrappedCart(props: Props) {
+    const totalQuantity = props.items.reduce((total, item) => total + item.quantity, 0)
+
+    return <div className="flex flex-row justify-center">
+        <div className="w-96 px-6 z-[100]">
+            <Sheet>
+                <OpenCartButton totalQuantity={totalQuantity}/>
+                <SheetContent side="top" className="mt-10 flex justify-center">
+                    <div className="flex flex-col w-96">
+                        <div className="font-semibold flex justify-center">
+                            Shopping Cart
+                        </div>
+                        <CartContent {...props}/>
+                    </div>
+                </SheetContent>
+            </Sheet>
+        </div>
+    </div>
+}

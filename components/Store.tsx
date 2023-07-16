@@ -25,7 +25,12 @@ function reducer(state: CartItem[], action: Action) {
                         item
                 })
             } else {
-                return [...state, {id: action.payload.id, name: action.payload.name, quantity: 1, priceId: action.payload.price.id}]
+                return [...state, {
+                    id: action.payload.id,
+                    name: action.payload.name,
+                    quantity: 1,
+                    priceId: action.payload.price.id
+                }]
             }
         case 'REMOVE_ITEM':
             return state.filter((item) => item.id !== action.payload.id)
@@ -45,14 +50,20 @@ const Store = ({products, onGoToCheckout}: Props) => {
     const handleAddProduct = (product: Product) => dispatch({type: 'ADD_ITEM', payload: product})
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-            <Cart items={items}
-                  onRemoveProduct={handleRemoveItem}
-                  redirectToPayment={onGoToCheckout}
-            />
-            <Products products={products}
-                      onAddProduct={handleAddProduct}/>
-        </main>
+        <div>
+            <div className="top-0 fixed w-full z-[100] bg-white">
+                <Cart items={items}
+                      onRemoveProduct={handleRemoveItem}
+                      redirectToPayment={onGoToCheckout}
+                />
+            </div>
+            <div className="flex min-h-screen flex-col items-center justify-between p-24">
+
+
+                <Products products={products}
+                          onAddProduct={handleAddProduct}/>
+            </div>
+        </div>
     )
 }
 
