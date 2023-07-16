@@ -4,7 +4,10 @@ import {Button} from "@/components/ui/button";
 export type Product = {
     id: string
     name: string
-    price: number
+    price: {
+        id: string,
+        amount: number,
+    }
     description: string
 }
 

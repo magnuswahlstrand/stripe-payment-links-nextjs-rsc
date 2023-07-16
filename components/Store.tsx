@@ -7,7 +7,7 @@ import {Product, Products} from "@/components/Products";
 
 type Props = {
     products: Product[]
-    onGoToCheckout: () => Promise<void>
+    onGoToCheckout: (items: CartItem[]) => Promise<void>
 }
 
 type Action =
@@ -25,7 +25,7 @@ function reducer(state: CartItem[], action: Action) {
                         item
                 })
             } else {
-                return [...state, {id: action.payload.id, name: action.payload.name, quantity: 1}]
+                return [...state, {id: action.payload.id, name: action.payload.name, quantity: 1, priceId: action.payload.price.id}]
             }
         case 'REMOVE_ITEM':
             return state.filter((item) => item.id !== action.payload.id)
@@ -34,10 +34,12 @@ function reducer(state: CartItem[], action: Action) {
     }
 }
 
+const INITIAL_PRODUCT: CartItem = {
+    id: "prod_OFvGCF45oTstv1", name: "Yiga clan", quantity: 1, priceId: 'price_1NTPQJGLM4u3hshryU7x5fi9',
+}
+
 const Store = ({products, onGoToCheckout}: Props) => {
-    const [items, dispatch] = useReducer(reducer, [
-        {id: "prod_OFvGCF45oTstv1", name: "Yiga clan", quantity: 1},
-    ])
+    const [items, dispatch] = useReducer(reducer, [INITIAL_PRODUCT])
 
     const handleRemoveItem = (id: string) => dispatch({type: 'REMOVE_ITEM', payload: {id}})
     const handleAddProduct = (product: Product) => dispatch({type: 'ADD_ITEM', payload: product})

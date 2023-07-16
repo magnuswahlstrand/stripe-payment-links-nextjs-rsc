@@ -2,22 +2,21 @@
 
 import Stripe from "stripe";
 import {redirect} from "next/navigation";
+import {CartItem} from "@/lib/types";
 
 const apiKey = process.env.STRIPE_API_KEY ?? ""
 const stripe = new Stripe(apiKey, {
     apiVersion: '2022-11-15',
 });
 
-export async function redirectToPaymentLink() {
+export async function redirectToPaymentLink(items: CartItem[]) {
     console.log('redirectToPaymentLink')
 
     const paymentLink = await stripe.paymentLinks.create({
-        line_items: [
-            {
-                price: 'price_1NTPQJGLM4u3hshryU7x5fi9',
-                quantity: 2,
-            },
-        ],
+        line_items: items.map((item) => ({
+            price: item.priceId,
+            quantity: item.quantity,
+        })),
         after_completion: {
             type: 'redirect',
             redirect: {
