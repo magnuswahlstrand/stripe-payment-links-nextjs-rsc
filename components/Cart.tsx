@@ -18,19 +18,20 @@ function CartItemRow(props: { item: CartItem, onRemoveItem: () => void }) {
 
     return <li className="border-t first:border-t-0  pt-5 pb-5 flex flex-row">
         <Image
-            src="http://placekitten.com/150/150"
+            src={item.imageUrl}
             className="w-24 h-24 rounded-sm object-cover border-1"
             objectFit="cover"
             width="100"
             height="100"
             alt={"product image"}/>
-        <div className="flex flex-col flex-1 pl-3 text-sm">
+        <div className="flex flex-col flex-1 pl-2 text-sm">
             <div className="flex flex-row justify-between text-base">
                 <div className="">{item.name}</div>
-                <div className="">$ 100.00</div>
+                <div className="">${item.quantity * item.price.amount}</div>
             </div>
             <div className="flex flex-row justify-between">
                 <div className="text-muted-foreground">Poster</div>
+                {item.quantity > 1 ? <div className="text-muted-foreground">${item.price.amount} each</div> : null}
             </div>
             <div className="flex flex-row justify-between mt-auto">
                 <div className="text-muted-foreground">Qty {item.quantity}</div>
@@ -56,7 +57,7 @@ function CartContent({items, onRemoveProduct, redirectToPayment}: Props) {
         await redirectToPayment(items)
     }
 
-    const totalPrice = items.reduce((total, item) => total + item.quantity * 100, 0)
+    const totalPrice = items.reduce((total, item) => total + item.quantity * item.price.amount, 0)
     const totalQuantity = items.reduce((total, item) => total + item.quantity, 0)
 
     if (totalQuantity < 1) {
@@ -66,16 +67,14 @@ function CartContent({items, onRemoveProduct, redirectToPayment}: Props) {
     }
 
     return (
-        <div className="flex flex-col items-center w-96">
-            <div className="px-6">
-                <ul>
+        <div className="flex flex-col justify-stretch items-center">
+            <div className="p-4">
+                <ul className={""}>
                     {items.map((item) => (
                         <CartItemRow key={item.id} item={item}
                                      onRemoveItem={() => onRemoveProduct(item.id)}/>
                     ))}
                 </ul>
-            </div>
-            <div className="p-6">
                 <div className={"flex flex-col"}>
                     <div className="flex flex-row justify-between">
                         <div className="">Subtotal</div>

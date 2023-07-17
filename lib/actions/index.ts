@@ -14,7 +14,7 @@ export async function redirectToPaymentLink(items: CartItem[]) {
 
     const paymentLink = await stripe.paymentLinks.create({
         line_items: items.map((item) => ({
-            price: item.priceId,
+            price: item.price.id,
             quantity: item.quantity,
         })),
         after_completion: {

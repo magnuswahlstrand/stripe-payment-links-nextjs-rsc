@@ -1,6 +1,7 @@
 import {Button} from "@/components/ui/button";
 import {ShoppingCart} from "lucide-react";
 import * as React from "react";
+import Image from "next/image";
 
 export type Product = {
     id: string
@@ -10,6 +11,7 @@ export type Product = {
         amount: number,
     }
     description: string
+    imageUrl: string
 }
 
 
@@ -18,22 +20,30 @@ export function Products({products, onAddProduct}: {
     onAddProduct: (product: Product) => void
 }) {
     return <div
-        className={"gap-4 md:max-w-3xl sm:max-w-md max-w-min mt-8 grid grid-cols-fill-12"}>
+        className={"gap-4 md:max-w-3xl max-w-md mt-12 grid grid-cols-fill-12"}>
         {products.map((product) => (
-            <div>
-                <div className={"relative overflow-hidden bg-slate-100 rounded"}>
-                    <img src="http://placekitten.com/500/500" alt="poster"
-                         className="w-full scale-75 hover:scale-100 transition transition-150"/>
+            <div className="border border-1 rounded">
+                <div className={"relative overflow-hidden bg-stone-100 rounded"}>
+                    <Image
+                        src={product.imageUrl}
+                        alt="poster"
+                        width={100}
+                        height={100}
+                        className="w-full scale-75 hover:scale-100 transition transition-150"/>
                 </div>
-                <h2 className={"text-sm mt-1"}>{product.name}</h2>
-                <h2 className={"text-xs font-light  mt-1"}>By Magnus</h2>
-                <div className="pt-3 flex flex-row justify-between items-center">
-                    From ${product.price.amount}
-                    <Button className="rounded-full" variant="outline"
+                <div className="p-2">
 
-                        onClick={() => onAddProduct(product)}>
-                        <ShoppingCart className=""/>
-                    </Button>
+                    <h2 className={"text-sm mt-1"}>{product.name}</h2>
+                    <h2 className={"text-xs font-light  mt-1"}>By Magnus</h2>
+                    <div className="pt-3 flex flex-row justify-between items-end">
+                        From ${product.price.amount}
+                        <Button className="rounded-full"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => onAddProduct(product)}>
+                            <ShoppingCart className="w-4"/>
+                        </Button>
+                    </div>
                 </div>
             </div>
         ))}

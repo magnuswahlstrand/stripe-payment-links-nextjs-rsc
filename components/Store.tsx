@@ -29,7 +29,8 @@ function reducer(state: CartItem[], action: Action) {
                     id: action.payload.id,
                     name: action.payload.name,
                     quantity: 1,
-                    priceId: action.payload.price.id
+                    price: action.payload.price,
+                    imageUrl: action.payload.imageUrl
                 }]
             }
         case 'REMOVE_ITEM':
@@ -40,7 +41,9 @@ function reducer(state: CartItem[], action: Action) {
 }
 
 const INITIAL_PRODUCT: CartItem = {
-    id: "prod_OFvGCF45oTstv1", name: "Yiga clan", quantity: 1, priceId: 'price_1NTPQJGLM4u3hshryU7x5fi9',
+    id: "prod_OFvGCF45oTstv1", name: "Yiga clan", quantity: 1,
+    price: {id: 'price_1NTPQJGLM4u3hshryU7x5fi9', amount: 15},
+    imageUrl: "http://placekitten.com/500/500",
 }
 
 const Store = ({products, onGoToCheckout}: Props) => {
