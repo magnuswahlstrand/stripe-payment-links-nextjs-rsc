@@ -1,5 +1,6 @@
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
+import {ShoppingCart} from "lucide-react";
+import * as React from "react";
 
 export type Product = {
     id: string
@@ -16,17 +17,25 @@ export function Products({products, onAddProduct}: {
     products: Product[]
     onAddProduct: (product: Product) => void
 }) {
-    return <div className={"flex flex-row gap-4"}>
+    return <div
+        className={"gap-4 md:max-w-3xl sm:max-w-md max-w-min mt-8 grid grid-cols-fill-12"}>
         {products.map((product) => (
-            <Card key={product.id}>
-                <CardHeader>
-                    <CardTitle>{product.name}</CardTitle>
-                    <CardDescription>{product.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Button onClick={() => onAddProduct(product)}>Add to cart</Button>
-                </CardContent>
-            </Card>
+            <div>
+                <div className={"relative overflow-hidden bg-slate-100 rounded"}>
+                    <img src="http://placekitten.com/500/500" alt="poster"
+                         className="w-full scale-75 hover:scale-100 transition transition-150"/>
+                </div>
+                <h2 className={"text-sm mt-1"}>{product.name}</h2>
+                <h2 className={"text-xs font-light  mt-1"}>By Magnus</h2>
+                <div className="pt-3 flex flex-row justify-between items-center">
+                    From ${product.price.amount}
+                    <Button className="rounded-full" variant="outline"
+
+                        onClick={() => onAddProduct(product)}>
+                        <ShoppingCart className=""/>
+                    </Button>
+                </div>
+            </div>
         ))}
     </div>;
 }

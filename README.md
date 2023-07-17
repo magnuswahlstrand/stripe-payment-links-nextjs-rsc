@@ -7,8 +7,10 @@ Experiment to using [React server components](https://nextjs.org/docs/getting-st
 * [x] Show products
 * [x] Add product to cart
 * [x] Create payment payment link and redirect
-* [ ] Add products view with images
-* [ ] Fixed shipping cost
+* [x] Fix products layout
+* [x] Responsive layout
+* [x] Zoom image on hover
+* [x] Fixed shipping cost
 * [x] Create separate repo for this demo
 * [ ] Store pending order in db
 * [ ] Create payment success page

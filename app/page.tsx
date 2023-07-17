@@ -15,6 +15,36 @@ async function getProducts() {
             description: "Poster",
             price: {id: 'price_1KZd7yGLM4u3hshrit8iVSAx', amount: 100}
         },
+        {
+            id: "prod_LG9QvqtbExSfVq2",
+            name: "Cats",
+            description: "Poster",
+            price: {id: 'price_1KZd7yGLM4u3hshrit8iVSAx', amount: 100}
+        },
+        {
+            id: "prod_LG9QvqtbExSfVq3",
+            name: "Cats",
+            description: "Poster",
+            price: {id: 'price_1KZd7yGLM4u3hshrit8iVSAx', amount: 100}
+        },
+        {
+            id: "prod_LG9QvqtbExSfVq4",
+            name: "Cats",
+            description: "Poster",
+            price: {id: 'price_1KZd7yGLM4u3hshrit8iVSAx', amount: 100}
+        },
+        {
+            id: "prod_LG9QvqtbExSfVq5",
+            name: "Cats",
+            description: "Poster",
+            price: {id: 'price_1KZd7yGLM4u3hshrit8iVSAx', amount: 100}
+        },
+        {
+            id: "prod_LG9QvqtbExSfVq6",
+            name: "Cats",
+            description: "Poster",
+            price: {id: 'price_1KZd7yGLM4u3hshrit8iVSAx', amount: 100}
+        },
     ]
     return products
 }

@@ -50,19 +50,16 @@ const Store = ({products, onGoToCheckout}: Props) => {
     const handleAddProduct = (product: Product) => dispatch({type: 'ADD_ITEM', payload: product})
 
     return (
-        <div>
+        <div className="flex flex-col items-center">
             <div className="top-0 fixed w-full z-[100] bg-white">
                 <Cart items={items}
                       onRemoveProduct={handleRemoveItem}
                       redirectToPayment={onGoToCheckout}
                 />
             </div>
-            <div className="flex min-h-screen flex-col items-center justify-between p-24">
-
-
-                <Products products={products}
-                          onAddProduct={handleAddProduct}/>
-            </div>
+            <Products
+                products={products}
+                onAddProduct={handleAddProduct}/>
         </div>
     )
 }
