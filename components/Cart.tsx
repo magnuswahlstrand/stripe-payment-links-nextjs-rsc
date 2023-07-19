@@ -1,4 +1,5 @@
 import * as React from "react"
+import {useEffect, useRef} from "react"
 import Image from "next/image"
 
 import {Button} from "@/components/ui/button"
@@ -16,7 +17,9 @@ type Props = {
 function CartItemRow(props: { item: CartItem, onRemoveItem: () => void }) {
     const {item, onRemoveItem} = props
 
-    return <li className="border-t first:border-t-0  pt-5 pb-5 flex flex-row">
+    return <li
+        key={item.id}
+        className="border-t first:border-t-0  pt-5 pb-5 flex flex-row">
         <Image
             src={item.imageUrl}
             className="w-24 h-24 rounded-sm object-cover border-1"
@@ -42,13 +45,43 @@ function CartItemRow(props: { item: CartItem, onRemoveItem: () => void }) {
     </li>;
 }
 
+export function useFirstRender() {
+    const firstRender = useRef(true);
+
+    useEffect(() => {
+        firstRender.current = false;
+    }, []);
+
+    return firstRender.current;
+}
 
 function OpenCartButton(props: { totalQuantity: number }) {
+    const ref = useRef<HTMLDivElement>(null)
+
+    console.log('rendering open cart button', props.totalQuantity)
+
+    const removeSpinAnimation = () => {
+        ref.current?.classList.remove('animate-cart-wiggle')
+        console.log('animation removed')
+    }
+
+    useEffect(() => {
+        ref.current?.classList.add('animate-cart-wiggle')
+        console.log('animation added')
+    }, [props.totalQuantity])
+
     return <SheetTrigger asChild>
-        <Button variant="ghost" className="py-0 w-full flex-row justify-end items-center">
-            <Badge>{props.totalQuantity}</Badge>
-            <ShoppingCart className="m-2 h-6 w-6"/> Cart
-        </Button>
+        <div>
+
+            <Button variant="ghost" className="py-0 w-full flex-row justify-end items-center">
+                <div className="" ref={ref} onAnimationEnd={removeSpinAnimation}>
+                    <Badge>
+                        {props.totalQuantity}
+                    </Badge>
+                </div>
+                <ShoppingCart className="m-2 h-6 w-6"/> Cart
+            </Button>
+        </div>
     </SheetTrigger>;
 }
 

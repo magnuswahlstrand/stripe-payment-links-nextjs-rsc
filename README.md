@@ -14,7 +14,7 @@ Experiment to using [React server components](https://nextjs.org/docs/getting-st
 * [x] Create separate repo for this demo
 * [ ] Store pending order in db
 * [ ] Create payment success page
-* [ ] Add animation to cart button ([inspiration](https://codepen.io/MinzCode/pen/pogqVVX))
+* [x] Add animation to cart button ([inspiration](https://codepen.io/MinzCode/pen/pogqVVX))
 
 ## Product generation
 

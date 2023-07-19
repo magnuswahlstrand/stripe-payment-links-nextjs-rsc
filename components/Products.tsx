@@ -22,17 +22,23 @@ export function Products({products, onAddProduct}: {
     return <div
         className={"gap-4 md:max-w-3xl max-w-md mt-12 grid grid-cols-fill-12"}>
         {products.map((product) => (
-            <div className="border border-1 rounded">
+            <div className="border border-1 rounded" key={product.id}>
                 <div className={"relative overflow-hidden bg-stone-100 rounded"}>
                     <Image
                         src={product.imageUrl}
                         alt="poster"
                         width={100}
                         height={100}
-                        className="w-full scale-75 hover:scale-100 transition transition-150"/>
+                        className="w-full scale-75 hover:scale-100 transition transition-150"
+                        onAnimationEnd={() => {
+                            alert('end!')
+                        }}
+                        onAnimationStart={() => {
+                            alert('start!')
+                        }}
+                    />
                 </div>
                 <div className="p-2">
-
                     <h2 className={"text-sm mt-1"}>{product.name}</h2>
                     <h2 className={"text-xs font-light  mt-1"}>By Magnus</h2>
                     <div className="pt-3 flex flex-row justify-between items-end">
