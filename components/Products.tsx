@@ -29,13 +29,7 @@ export function Products({products, onAddProduct}: {
                         alt="poster"
                         width={100}
                         height={100}
-                        className="w-full scale-75 hover:scale-100 transition transition-150"
-                        onAnimationEnd={() => {
-                            alert('end!')
-                        }}
-                        onAnimationStart={() => {
-                            alert('start!')
-                        }}
+                        className="w-full scale-75 hover:scale-100 transition duration-300"
                     />
                 </div>
                 <div className="p-2">
@@ -43,7 +37,7 @@ export function Products({products, onAddProduct}: {
                     <h2 className={"text-xs font-light  mt-1"}>By Magnus</h2>
                     <div className="pt-3 flex flex-row justify-between items-end">
                         From ${product.price.amount}
-                        <Button className="rounded-full"
+                        <Button className="rounded-full active:bg-muted-foreground active:text-background transition"
                                 variant="outline"
                                 size="sm"
                                 onClick={() => onAddProduct(product)}>
