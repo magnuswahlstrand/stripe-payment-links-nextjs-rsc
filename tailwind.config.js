@@ -76,7 +76,7 @@ module.exports = {
         'cart-wiggle': 'wiggle 0.3s linear',
       },
       gridTemplateColumns: {
-        'fill-12': 'repeat(auto-fill, minmax(12rem, 1fr))',
+        'fill-14': 'repeat(auto-fill, minmax(14rem, 1fr))',
       },
     },
   },

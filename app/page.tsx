@@ -18,6 +18,20 @@ async function getProducts() {
             price: {id: 'price_1KZd7yGLM4u3hshrit8iVSAx', amount: 15},
             imageUrl: "http://placekitten.com/600/600",
         },
+        {
+            id: "prod_LG9QvqtbExSfVq2",
+            name: "Cats",
+            description: "Poster",
+            price: {id: 'price_1KZd7yGLM4u3hshrit8iVSAx', amount: 15},
+            imageUrl: "http://placekitten.com/400/400",
+        },
+        {
+            id: "prod_LG9QvqtbExSfVq3",
+            name: "Cats",
+            description: "Poster",
+            price: {id: 'price_1KZd7yGLM4u3hshrit8iVSAx', amount: 15},
+            imageUrl: "http://placekitten.com/300/300",
+        },
     ]
     return products
 }

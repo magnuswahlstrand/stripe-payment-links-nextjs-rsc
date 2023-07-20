@@ -20,7 +20,7 @@ export function Products({products, onAddProduct}: {
     onAddProduct: (product: Product) => void
 }) {
     return <div
-        className={"gap-4 md:max-w-3xl max-w-md mt-12 grid grid-cols-fill-12"}>
+        className={"gap-4 md:max-w-3xl sm:max-w-xl max-w-sm mt-12 grid grid-cols-fill-14"}>
         {products.map((product) => (
             <div className="border border-1 rounded" key={product.id}>
                 <div className={"relative overflow-hidden bg-stone-100 rounded"}>
@@ -29,7 +29,7 @@ export function Products({products, onAddProduct}: {
                         alt="poster"
                         width={100}
                         height={100}
-                        className="w-full scale-75 hover:scale-100 transition duration-300"
+                        className="w-full sm:scale-75 hover:scale-100 transition duration-300"
                     />
                 </div>
                 <div className="p-2">

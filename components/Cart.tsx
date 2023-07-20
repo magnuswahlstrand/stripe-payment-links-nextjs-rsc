@@ -58,22 +58,17 @@ export function useFirstRender() {
 function OpenCartButton(props: { totalQuantity: number }) {
     const ref = useRef<HTMLDivElement>(null)
 
-    console.log('rendering open cart button', props.totalQuantity)
-
     const removeSpinAnimation = () => {
         ref.current?.classList.remove('animate-cart-wiggle')
-        console.log('animation removed')
     }
 
     useEffect(() => {
         ref.current?.classList.add('animate-cart-wiggle')
-        console.log('animation added')
     }, [props.totalQuantity])
 
     return <SheetTrigger asChild>
-        <div>
-
-            <Button variant="ghost" className="py-0 w-full flex-row justify-end items-center">
+        <div className="w-full">
+            <Button variant="ghost" className="rounded-none py-0 w-full flex-row justify-center items-center">
                 <div className="" ref={ref} onAnimationEnd={removeSpinAnimation}>
                     <Badge>
                         {props.totalQuantity}
@@ -129,7 +124,7 @@ export default function WrappedCart(props: Props) {
     const totalQuantity = props.items.reduce((total, item) => total + item.quantity, 0)
 
     return <div className="flex flex-row justify-center">
-        <div className="w-96 px-6 z-[100]">
+        <div className="w-full z-[100]">
             <Sheet>
                 <OpenCartButton totalQuantity={totalQuantity}/>
                 <SheetContent side="top" className="mt-10 flex justify-center">
