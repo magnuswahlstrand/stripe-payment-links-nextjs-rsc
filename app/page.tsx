@@ -6,10 +6,10 @@ import {redirectToPaymentLink} from "@/lib/actions";
 async function getProducts() {
     const products: Product[] = [
         {
-            id: "prod_OFvGCF45oTstv1", name: "Yiga clan",
-            description: "Poster",
+            id: "prod_OFvGCF45oTstv1", name: "Princess of Time",
+            description: "Black T-shirt",
             price: {id: 'price_1NTPQJGLM4u3hshryU7x5fi9', amount: 10},
-            imageUrl: "http://placekitten.com/500/500",
+            imageUrl: "/images/transparent-tshirt-time-cropped.png",
         },
         {
             id: "prod_LG9QvqtbExSfVq",

@@ -20,7 +20,7 @@ export function Products({products, onAddProduct}: {
     onAddProduct: (product: Product) => void
 }) {
     return <div
-        className={"gap-4 md:max-w-3xl sm:max-w-xl max-w-sm mt-12 grid grid-cols-fill-14"}>
+        className={"gap-4 md:max-w-3xl sm:max-w-xl max-w-sm mt-16 grid grid-cols-fill-14"}>
         {products.map((product) => (
             <div className="border border-1 rounded" key={product.id}>
                 <div className={"relative overflow-hidden bg-stone-100 rounded"}>

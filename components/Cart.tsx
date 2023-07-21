@@ -67,8 +67,11 @@ function OpenCartButton(props: { totalQuantity: number }) {
     }, [props.totalQuantity])
 
     return <SheetTrigger asChild>
-        <div className="w-full">
-            <Button variant="ghost" className="rounded-none py-0 w-full flex-row justify-center items-center">
+        <div className="w-full flex flex-row justify-between items-center">
+            <div className="bg-foreground text-background font-medium ml-2 px-2 py-0 rounded uppercase text-lg">
+                Time Bubble
+            </div>
+            <Button variant="ghost" className="rounded-none py-0 flex-row justify-center items-center">
                 <div className="" ref={ref} onAnimationEnd={removeSpinAnimation}>
                     <Badge>
                         {props.totalQuantity}
@@ -124,7 +127,7 @@ export default function WrappedCart(props: Props) {
     const totalQuantity = props.items.reduce((total, item) => total + item.quantity, 0)
 
     return <div className="flex flex-row justify-center">
-        <div className="w-full z-[100]">
+        <div className="w-full sm:max-w-md max-w-full z-[100]">
             <Sheet>
                 <OpenCartButton totalQuantity={totalQuantity}/>
                 <SheetContent side="top" className="mt-10 flex justify-center">
