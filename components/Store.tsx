@@ -54,12 +54,10 @@ const Store = ({products, onGoToCheckout}: Props) => {
 
     return (
         <div className="flex flex-col items-center">
-            <div className="top-0 fixed w-full z-[100] bg-white">
-                <Cart items={items}
-                      onRemoveProduct={handleRemoveItem}
-                      redirectToPayment={onGoToCheckout}
-                />
-            </div>
+            <Cart items={items}
+                  onRemoveProduct={handleRemoveItem}
+                  redirectToPayment={onGoToCheckout}
+            />
             <Products
                 products={products}
                 onAddProduct={handleAddProduct}/>

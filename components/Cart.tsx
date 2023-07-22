@@ -1,12 +1,11 @@
 import * as React from "react"
-import {useEffect, useRef} from "react"
-import Image from "next/image"
+import {useEffect, useLayoutEffect, useRef, useState} from "react"
 
 import {Button} from "@/components/ui/button"
 import {CartItem} from "@/lib/types";
-import {Sheet, SheetContent, SheetTrigger,} from "@/components/ui/sheet"
 import {ShoppingCart} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
+import {CartRow} from "@/components/CartRow";
 
 type Props = {
     items: CartItem[]
@@ -14,48 +13,7 @@ type Props = {
     redirectToPayment: (items: CartItem[]) => Promise<void>
 }
 
-function CartItemRow(props: { item: CartItem, onRemoveItem: () => void }) {
-    const {item, onRemoveItem} = props
-
-    return <li
-        key={item.id}
-        className="border-t first:border-t-0  pt-5 pb-5 flex flex-row">
-        <Image
-            src={item.imageUrl}
-            className="w-24 h-24 rounded-sm object-cover border-1"
-            objectFit="cover"
-            width="100"
-            height="100"
-            alt={"product image"}/>
-        <div className="flex flex-col flex-1 pl-2 text-sm">
-            <div className="flex flex-row justify-between text-base">
-                <div className="">{item.name}</div>
-                <div className="">${item.quantity * item.price.amount}</div>
-            </div>
-            <div className="flex flex-row justify-between">
-                <div className="text-muted-foreground">Poster</div>
-                {item.quantity > 1 ? <div className="text-muted-foreground">${item.price.amount} each</div> : null}
-            </div>
-            <div className="flex flex-row justify-between mt-auto">
-                <div className="text-muted-foreground">Qty {item.quantity}</div>
-                <button className="font-medium text-indigo-700 hover:text-indigo-400" onClick={onRemoveItem}>Remove
-                </button>
-            </div>
-        </div>
-    </li>;
-}
-
-export function useFirstRender() {
-    const firstRender = useRef(true);
-
-    useEffect(() => {
-        firstRender.current = false;
-    }, []);
-
-    return firstRender.current;
-}
-
-function OpenCartButton(props: { totalQuantity: number }) {
+function OpenCartButtonV2(props: { totalQuantity: number, onToggleCartOpen: () => void }) {
     const ref = useRef<HTMLDivElement>(null)
 
     const removeSpinAnimation = () => {
@@ -66,24 +24,31 @@ function OpenCartButton(props: { totalQuantity: number }) {
         ref.current?.classList.add('animate-cart-wiggle')
     }, [props.totalQuantity])
 
-    return <SheetTrigger asChild>
-        <div className="w-full flex flex-row justify-between items-center">
-            <div className="bg-foreground text-background font-medium ml-2 px-2 py-0 rounded uppercase text-lg">
+    return (
+        <div className="bg-foreground flex flex-row justify-between items-center px-3 pt-1">
+            <div className="bg-background text-foreground font-medium px-2 py-0 rounded uppercase text-lg">
                 Time Bubble
             </div>
-            <Button variant="ghost" className="rounded-none py-0 flex-row justify-center items-center">
-                <div className="" ref={ref} onAnimationEnd={removeSpinAnimation}>
-                    <Badge>
+            <button
+                className="text-background flex flex-row items-center hover:bg-muted-foreground rounded-md gap-2 px-3 py-1"
+                onClick={() => props.onToggleCartOpen()}
+            >
+                <div ref={ref} onAnimationEnd={removeSpinAnimation}>
+                    <Badge variant="secondary">
                         {props.totalQuantity}
                     </Badge>
                 </div>
-                <ShoppingCart className="m-2 h-6 w-6"/> Cart
-            </Button>
-        </div>
-    </SheetTrigger>;
+                <ShoppingCart className="h-6 w-6"/>
+            </button>
+        </div>)
 }
 
-function CartContent({items, onRemoveProduct, redirectToPayment}: Props) {
+type CartContentProps = Props & {
+    closeCart: () => void
+}
+
+
+function CartContent({items, onRemoveProduct, redirectToPayment, closeCart}: CartContentProps) {
     async function action() {
         await redirectToPayment(items)
     }
@@ -91,32 +56,40 @@ function CartContent({items, onRemoveProduct, redirectToPayment}: Props) {
     const totalPrice = items.reduce((total, item) => total + item.quantity * item.price.amount, 0)
     const totalQuantity = items.reduce((total, item) => total + item.quantity, 0)
 
+
     if (totalQuantity < 1) {
-        return <div className="text-sm text-muted-foreground flex justify-center">
+        return <div className="flex flex-col items-center ">
+            <ShoppingCart className="h-8 w-8"/>
+            <span className="pt-2 ">
             Your cart is empty
+            </span>
         </div>
     }
 
+
     return (
-        <div className="flex flex-col justify-stretch items-center">
-            <div className="p-4">
-                <ul className={""}>
-                    {items.map((item) => (
-                        <CartItemRow key={item.id} item={item}
-                                     onRemoveItem={() => onRemoveProduct(item.id)}/>
-                    ))}
-                </ul>
-                <div className={"flex flex-col"}>
-                    <div className="flex flex-row justify-between">
-                        <div className="">Subtotal</div>
-                        <div className="">${totalPrice}</div>
-                    </div>
-                    <div className={"text-sm text-muted-foreground"}>Taxes and shipping calculated on checkout.
-                    </div>
-                    <form className="w-full" action={action}>
-                        <Button className="w-full bg-indigo-700 mt-6" type="submit"
+        <div className="w-full">
+            <ul className={""}>
+                {items.map((item) => (
+                    <CartRow
+                        key={item.id} item={item}
+                        onRemoveItem={() => onRemoveProduct(item.id)}
+                    />
+                ))}
+            </ul>
+            <div className={"flex flex-col"}>
+                <div className="flex flex-row justify-between">
+                    <div className="">Subtotal</div>
+                    <div className="">${totalPrice}</div>
+                </div>
+                <div className={"text-sm text-muted-foreground"}>Taxes and shipping calculated on checkout.</div>
+                <div className="flex flex-col w-3/4 gap-2">
+                    <form className="w-full mt-2 flex justify-center" action={action}>
+                        <Button className="w-full" type="submit"
                                 disabled={totalQuantity < 1}>Checkout</Button>
                     </form>
+                    <Button className="w-full" variant="outline"
+                            onClick={closeCart}>Close</Button>
                 </div>
             </div>
         </div>
@@ -124,21 +97,38 @@ function CartContent({items, onRemoveProduct, redirectToPayment}: Props) {
 }
 
 export default function WrappedCart(props: Props) {
+    const [height, setHeight] = useState(0);
+
+    const ref = useRef<HTMLDivElement>(null)
+    const [cartOpen, setCartOpen] = React.useState(false)
+
+    useLayoutEffect(() => {
+        if (ref.current && ref.current.clientHeight) {
+            const height = ref.current.clientHeight;
+            console.log('call', height)
+            setHeight(height + 1);
+        }
+    }, [props.items])
+
+    const toggleCartOpen = () => setCartOpen(state => !state)
+
     const totalQuantity = props.items.reduce((total, item) => total + item.quantity, 0)
 
-    return <div className="flex flex-row justify-center">
-        <div className="w-full sm:max-w-md max-w-full z-[100]">
-            <Sheet>
-                <OpenCartButton totalQuantity={totalQuantity}/>
-                <SheetContent side="top" className="mt-10 flex justify-center">
-                    <div className="flex flex-col w-96">
-                        <div className="font-semibold flex justify-center">
-                            Shopping Cart
+
+    return <div className="flex flex-row justify-center w-full">
+        <div className="w-full">
+            <OpenCartButtonV2 totalQuantity={totalQuantity} onToggleCartOpen={toggleCartOpen}/>
+            <div className={`overflow-hidden transition-max-height duration-300 border-b-4 border-foreground`} style={{
+                maxHeight: cartOpen ? `${height}px` : "0px",
+            }}>
+                <div ref={ref}>
+                    <div className={"p-4 border-t-4 border-foreground flex flex-col items-center"}>
+                        <div className={"max-w-md w-full"}>
+                            <CartContent {...props} closeCart={() => setCartOpen(false)}/>
                         </div>
-                        <CartContent {...props}/>
                     </div>
-                </SheetContent>
-            </Sheet>
+                </div>
+            </div>
         </div>
     </div>
 }

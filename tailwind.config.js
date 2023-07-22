@@ -67,7 +67,7 @@ module.exports = {
         },
         wiggle: {
           '0%, 100%': { transform: 'rotate(-5deg)' },
-          '50%': { transform: 'rotate(5deg) scale(1.2)' },
+          '50%': { transform: 'rotate(5deg) scale(1.3)' },
         }
       },
       animation: {
@@ -77,6 +77,9 @@ module.exports = {
       },
       gridTemplateColumns: {
         'fill-14': 'repeat(auto-fill, minmax(14rem, 1fr))',
+      },
+      transitionProperty: {
+        'max-height': 'max-height'
       },
     },
   },
