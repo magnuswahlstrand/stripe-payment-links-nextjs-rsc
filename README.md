@@ -15,14 +15,16 @@ and [server actions](https://nextjs.org/docs/app/building-your-application/data-
 * [x] Fixed shipping cost
 * [x] Create separate repo for this demo
 * [x] Add animation to cart button ([inspiration](https://codepen.io/MinzCode/pen/pogqVVX))
-* [ ] Fix scroll bug in cart
+* [x] Use useTransition when redirecting to payment page (used useFormStatus)
+* [ ] Make quantity updatable in cart
+* [ ] Store cart status in local memory
 
 ## Order storage
 
 * [ ] Store pending order in db
 * [ ] Create payment success page
 
-## Product generation
+## Bugs
 
-* [ ] Upload image
-* [ ] Store image to Cloud Storage
+* [x] Scroll bug in cart
+* [ ] Cart height issue when switching between mobile and desktop

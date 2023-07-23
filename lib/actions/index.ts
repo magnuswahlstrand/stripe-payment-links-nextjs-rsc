@@ -10,7 +10,6 @@ const stripe = new Stripe(apiKey, {
 });
 
 export async function redirectToPaymentLink(items: CartItem[]) {
-    console.log('redirectToPaymentLink')
 
     const paymentLink = await stripe.paymentLinks.create({
         line_items: items.map((item) => ({
@@ -28,7 +27,7 @@ export async function redirectToPaymentLink(items: CartItem[]) {
         },
         shipping_options: [
             {
-                shipping_rate: 'shr_1NTlBaGLM4u3hshr0THYK5MW',
+                shipping_rate: 'shr_1NX8QlGLM4u3hshrv3MjMqgm',
             },
         ],
     });

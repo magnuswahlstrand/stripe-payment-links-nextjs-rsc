@@ -47,19 +47,17 @@ const INITIAL_PRODUCT: CartItem = {
 }
 
 const Store = ({products, onGoToCheckout}: Props) => {
-    const [items, dispatch] = useReducer(reducer, [INITIAL_PRODUCT])
+    const [items, dispatch] = useReducer(reducer, [])
 
     const handleRemoveItem = (id: string) => dispatch({type: 'REMOVE_ITEM', payload: {id}})
     const handleAddProduct = (product: Product) => dispatch({type: 'ADD_ITEM', payload: product})
 
     return (
         <div className="flex flex-col items-center">
-            <div className="top-0 fixed w-full z-[100] bg-white">
-                <Cart items={items}
-                      onRemoveProduct={handleRemoveItem}
-                      redirectToPayment={onGoToCheckout}
-                />
-            </div>
+            <Cart items={items}
+                  onRemoveProduct={handleRemoveItem}
+                  redirectToPayment={onGoToCheckout}
+            />
             <Products
                 products={products}
                 onAddProduct={handleAddProduct}/>
