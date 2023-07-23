@@ -1,16 +1,17 @@
 import * as React from "react";
 import {CartRow2} from "@/components/CartRow";
-import {Button} from "@/components/ui/button";
 import {ShoppingCart} from "lucide-react";
 import {CartItem} from "@/lib/types";
+import {GoToCheckout2} from "@/components/GoToCheckoutButton";
 
-type FoobarProps = {
+type CartListProps = {
     items: CartItem[]
     onRemoveProduct: (productId: string) => void
     redirectToPayment: () => Promise<void>
+    closeButton: React.ReactNode,
 };
 
-export function Foobar({items, redirectToPayment, onRemoveProduct}: FoobarProps) {
+export function CartList({items, redirectToPayment, onRemoveProduct, closeButton}: CartListProps) {
     const totalQuantity = items.reduce((total, item) => total + item.quantity, 0)
     const totalPrice = items.reduce((total, item) => total + item.quantity * item.price.amount, 0)
 
@@ -30,9 +31,10 @@ export function Foobar({items, redirectToPayment, onRemoveProduct}: FoobarProps)
             </ul>
             <Subtotal totalPrice={totalPrice}/>
             {/*go to payment*/}
-            <Button className="mt-4 w-full" type="submit">Checkout</Button>
+            <GoToCheckout2/>
         </form>}
         {/*close checkout*/}
+        {closeButton}
     </div>
 }
 

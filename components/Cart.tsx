@@ -4,7 +4,9 @@ import {CartItem} from "@/lib/types";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {CartButtonContent} from "@/components/CartButtonContent";
 import {Button} from "@/components/ui/button";
-import {Foobar} from "@/components/Foobar";
+import {CartList} from "@/components/CartList";
+import {PopoverClose} from "@radix-ui/react-popover";
+import {GoToCheckoutButton} from "@/components/GoToCheckoutButton";
 
 type Props = {
     items: CartItem[]
@@ -51,27 +53,41 @@ export default function WrappedCart(props: Props) {
                     </button>
                 </div>
                 <div className="md:block hidden">
-                    {/*Desktop*/}
-                    <Popover>
-                        <PopoverTrigger><CartButtonContent totalQuantity={totalQuantity}/></PopoverTrigger>
-                        <PopoverContent className="w-96 mr-2">
-                            <Foobar items={props.items} redirectToPayment={redirectToPayment} onRemoveProduct={props.onRemoveProduct} />
-                        </PopoverContent>
-                    </Popover>
-                    aa
+                    <div className="flex flex-row">
+
+                        {/*Desktop*/}
+                        <Popover>
+                            <PopoverTrigger><CartButtonContent totalQuantity={totalQuantity}/></PopoverTrigger>
+                            <PopoverContent className="w-96 mr-2">
+                                <CartList items={props.items} redirectToPayment={redirectToPayment}
+                                          onRemoveProduct={props.onRemoveProduct} closeButton={
+                                    <PopoverClose className="mt-4 w-full">
+                                        <Button variant="outline" className="w-full">Close</Button>
+                                    </PopoverClose>
+                                }/>
+
+                            </PopoverContent>
+                        </Popover>
+                        <form action={redirectToPayment}>
+                            <GoToCheckoutButton totalQuantity={totalQuantity}/>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div className={`overflow-hidden transition-max-height duration-300 shadow`} style={{
+            <div className={`md:hidden overflow-hidden transition-max-height duration-300 shadow`} style={{
                 maxHeight: cartOpen ? `${height}px` : "0px",
             }}>
                 <div ref={ref}>
-                    <Foobar items={props.items} redirectToPayment={redirectToPayment} onRemoveProduct={props.onRemoveProduct} />
-                    <Button className="mt-4 w-full" variant="outline"
-                            onClick={() => setCartOpen(false)}>Close</Button>
+                    <CartList items={props.items} redirectToPayment={redirectToPayment}
+                              onRemoveProduct={props.onRemoveProduct} closeButton={
+                        <Button className="mt-4 w-full" variant="outline"
+                                onClick={() => setCartOpen(false)}>Close</Button>
+                    }/>
+
                 </div>
             </div>
-            <div className="bg-lime-300 h-1"></div>
-            <div className="bg-lime-100 h-1"></div>
+            <div className="bg-stone-500 h-1"></div>
+            <div className="bg-stone-300 h-1"></div>
         </div>
     </div>
 }

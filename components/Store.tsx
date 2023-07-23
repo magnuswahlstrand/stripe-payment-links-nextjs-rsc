@@ -47,7 +47,7 @@ const INITIAL_PRODUCT: CartItem = {
 }
 
 const Store = ({products, onGoToCheckout}: Props) => {
-    const [items, dispatch] = useReducer(reducer, [INITIAL_PRODUCT])
+    const [items, dispatch] = useReducer(reducer, [])
 
     const handleRemoveItem = (id: string) => dispatch({type: 'REMOVE_ITEM', payload: {id}})
     const handleAddProduct = (product: Product) => dispatch({type: 'ADD_ITEM', payload: product})
