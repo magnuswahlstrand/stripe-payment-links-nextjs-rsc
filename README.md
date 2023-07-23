@@ -16,6 +16,7 @@ and [server actions](https://nextjs.org/docs/app/building-your-application/data-
 * [x] Create separate repo for this demo
 * [x] Add animation to cart button ([inspiration](https://codepen.io/MinzCode/pen/pogqVVX))
 * [ ] Fix scroll bug in cart
+* [ ] Make quantity updatable in cart
 
 ## Order storage
 

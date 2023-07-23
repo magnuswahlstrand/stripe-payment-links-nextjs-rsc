@@ -5,7 +5,7 @@ import {Button} from "@/components/ui/button"
 import {CartItem} from "@/lib/types";
 import {ShoppingCart} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
-import {CartRow} from "@/components/CartRow";
+import {CartRow, CartRow2} from "@/components/CartRow";
 
 type Props = {
     items: CartItem[]
@@ -48,6 +48,16 @@ type CartContentProps = Props & {
 }
 
 
+function Subtotal(props: { totalPrice: number }) {
+    return <>
+        <div className="pt-4 flex flex-row justify-between font-bold">
+            <div className="">Subtotal</div>
+            <div className="">${props.totalPrice}</div>
+        </div>
+        <div className={"pt-2 text-sm"}>Taxes and shipping calculated on checkout.</div>
+    </>;
+}
+
 function CartContent({items, onRemoveProduct, redirectToPayment, closeCart}: CartContentProps) {
     async function action() {
         await redirectToPayment(items)
@@ -78,11 +88,7 @@ function CartContent({items, onRemoveProduct, redirectToPayment, closeCart}: Car
                 ))}
             </ul>
             <div className={"flex flex-col"}>
-                <div className="flex flex-row justify-between">
-                    <div className="">Subtotal</div>
-                    <div className="">${totalPrice}</div>
-                </div>
-                <div className={"text-sm text-muted-foreground"}>Taxes and shipping calculated on checkout.</div>
+                <Subtotal totalPrice={totalPrice}/>
                 <div className="flex flex-col w-3/4 gap-2">
                     <form className="w-full mt-2 flex justify-center" action={action}>
                         <Button className="w-full" type="submit"
@@ -113,22 +119,47 @@ export default function WrappedCart(props: Props) {
     const toggleCartOpen = () => setCartOpen(state => !state)
 
     const totalQuantity = props.items.reduce((total, item) => total + item.quantity, 0)
-
+    const totalPrice = props.items.reduce((total, item) => total + item.quantity * item.price.amount, 0)
+    async function action() {
+        await props.redirectToPayment(props.items)
+    }
 
     return <div className="flex flex-row justify-center w-full">
         <div className="w-full">
             <OpenCartButtonV2 totalQuantity={totalQuantity} onToggleCartOpen={toggleCartOpen}/>
-            <div className={`overflow-hidden transition-max-height duration-300 border-b-4 border-foreground`} style={{
-                maxHeight: cartOpen ? `${height}px` : "0px",
-            }}>
-                <div ref={ref}>
-                    <div className={"p-4 border-t-4 border-foreground flex flex-col items-center"}>
-                        <div className={"max-w-md w-full"}>
-                            <CartContent {...props} closeCart={() => setCartOpen(false)}/>
-                        </div>
-                    </div>
-                </div>
+            <div className={"py-3 m-5"}>
+                <form action={action}>
+
+                    {/*header */}
+                    <h3 className="font-semibold text-xl">Your cart</h3>
+                    {/*list*/}
+                    <ul>
+                        {props.items.map((item) => (
+                            <CartRow2
+                                key={item.id} item={item}
+                                onRemoveItem={() => props.onRemoveProduct(item.id)}
+                            />
+                        ))}
+                    </ul>
+                    <Subtotal totalPrice={totalPrice}/>
+                    {/*go to payment*/}
+                    <Button className="mt-4 w-full" type="submit">Checkout</Button>
+                </form>
+                {/*close checkout*/}
+                <Button className="mt-4 w-full" variant="outline" onClick={() => setCartOpen(false)}>Close</Button>
             </div>
+            <div className="bg-indigo-700 h-6"></div>
+            {/*<div className={`overflow-hidden transition-max-height duration-300 border-b-4 border-foreground`} style={{*/}
+            {/*    maxHeight: cartOpen ? `${height}px` : "0px",*/}
+            {/*}}>*/}
+            {/*    <div ref={ref}>*/}
+            {/*        <div className={"p-4 border-t-4 border-foreground flex flex-col items-center"}>*/}
+            {/*            <div className={"max-w-md w-full"}>*/}
+            {/*                <CartContent {...props} closeCart={() => setCartOpen(false)}/>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </div>
     </div>
 }
