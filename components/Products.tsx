@@ -20,7 +20,7 @@ export function Products({products, onAddProduct}: {
     onAddProduct: (product: Product) => void
 }) {
     return <div
-        className={"gap-4 md:max-w-3xl sm:max-w-xl max-w-sm mt-16 grid grid-cols-fill-14"}>
+        className={"gap-4 md:max-w-3xl max-w-full mt-8 grid grid-cols-fill-14"}>
         {products.map((product) => (
             <div className="border border-1 rounded" key={product.id}>
                 <div className={"relative overflow-hidden bg-stone-100 rounded"}>
@@ -34,7 +34,7 @@ export function Products({products, onAddProduct}: {
                 </div>
                 <div className="p-2">
                     <h2 className={"text-sm mt-1"}>{product.name}</h2>
-                    <h2 className={"text-xs font-light  mt-1"}>By Magnus</h2>
+                    <h2 className={"text-xs font-light mt-1 uppercase text-muted-foreground"}>{product.description}</h2>
                     <div className="pt-3 flex flex-row justify-between items-end">
                         From ${product.price.amount}
                         <Button className="rounded-full active:bg-muted-foreground active:text-background transition"
