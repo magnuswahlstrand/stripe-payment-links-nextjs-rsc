@@ -11,6 +11,7 @@ import {GoToCheckoutButton} from "@/components/GoToCheckoutButton";
 type Props = {
     items: CartItem[]
     onRemoveProduct: (productId: string) => void
+    onChangeQuantity: (productId: string, quantity: number) => void
     redirectToPayment: (items: CartItem[]) => Promise<void>
 }
 
@@ -58,9 +59,11 @@ export default function WrappedCart(props: Props) {
                         {/*Desktop*/}
                         <Popover>
                             <PopoverTrigger><CartButtonContent totalQuantity={totalQuantity}/></PopoverTrigger>
-                            <PopoverContent className="w-96 mr-2">
+                            <PopoverContent className="w-[500px]">
                                 <CartList items={props.items} redirectToPayment={redirectToPayment}
-                                          onRemoveProduct={props.onRemoveProduct} closeButton={
+                                          onRemoveProduct={props.onRemoveProduct}
+                                          onChangeQuantity={props.onChangeQuantity}
+                                          closeButton={
                                     <PopoverClose className="mt-4 w-full">
                                         <Button variant="outline" className="w-full">Close</Button>
                                     </PopoverClose>
@@ -79,7 +82,9 @@ export default function WrappedCart(props: Props) {
             }}>
                 <div ref={ref}>
                     <CartList items={props.items} redirectToPayment={redirectToPayment}
-                              onRemoveProduct={props.onRemoveProduct} closeButton={
+                              onRemoveProduct={props.onRemoveProduct}
+                              onChangeQuantity={props.onChangeQuantity}
+                              closeButton={
                         <Button className="mt-4 w-full" variant="outline"
                                 onClick={() => setCartOpen(false)}>Close</Button>
                     }/>

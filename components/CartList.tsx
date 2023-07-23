@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CartRow2} from "@/components/CartRow";
+import {CartRow} from "@/components/CartRow";
 import {ShoppingCart} from "lucide-react";
 import {CartItem} from "@/lib/types";
 import {GoToCheckout2} from "@/components/GoToCheckoutButton";
@@ -7,13 +7,16 @@ import {GoToCheckout2} from "@/components/GoToCheckoutButton";
 type CartListProps = {
     items: CartItem[]
     onRemoveProduct: (productId: string) => void
+    onChangeQuantity: (productId: string, quantity: number) => void
     redirectToPayment: () => Promise<void>
     closeButton: React.ReactNode,
 };
 
-export function CartList({items, redirectToPayment, onRemoveProduct, closeButton}: CartListProps) {
-    const totalQuantity = items.reduce((total, item) => total + item.quantity, 0)
-    const totalPrice = items.reduce((total, item) => total + item.quantity * item.price.amount, 0)
+export function CartList({items, redirectToPayment, onRemoveProduct, onChangeQuantity, closeButton}: CartListProps) {
+    const nonEmptyItems = items.filter(item => item.quantity > 0)
+
+    const totalQuantity = nonEmptyItems.reduce((total, item) => total + item.quantity, 0)
+    const totalPrice = nonEmptyItems.reduce((total, item) => total + item.quantity * item.price.amount, 0)
 
     return <div className={"p-4"}>
         {totalQuantity === 0 && <CartEmpty/>}
@@ -22,10 +25,11 @@ export function CartList({items, redirectToPayment, onRemoveProduct, closeButton
             <h3 className="font-semibold text-xl">Your cart</h3>
             {/*list*/}
             <ul>
-                {items.map((item) => (
-                    <CartRow2
+                {nonEmptyItems.map((item) => (
+                    <CartRow
                         key={item.id} item={item}
                         onRemoveItem={() => onRemoveProduct(item.id)}
+                        onChangeQuantity={(quantity: number) => onChangeQuantity(item.id, quantity)}
                     />
                 ))}
             </ul>
