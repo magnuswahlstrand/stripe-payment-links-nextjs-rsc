@@ -25,7 +25,7 @@ function OpenCartButtonV2(props: { totalQuantity: number, onToggleCartOpen: () =
     }, [props.totalQuantity])
 
     return (
-        <div className="bg-foreground flex flex-row justify-between items-center px-3 pt-1">
+        <div className="bg-foreground flex flex-row justify-between items-center px-3 pt-1 pb-1">
             <div className="bg-background text-foreground font-medium px-2 py-0 rounded uppercase text-lg">
                 Time Bubble
             </div>
@@ -34,9 +34,7 @@ function OpenCartButtonV2(props: { totalQuantity: number, onToggleCartOpen: () =
                 onClick={() => props.onToggleCartOpen()}
             >
                 <div ref={ref} onAnimationEnd={removeSpinAnimation}>
-                    <Badge variant="secondary">
-                        {props.totalQuantity}
-                    </Badge>
+                    <Badge variant="secondary">{props.totalQuantity}</Badge>
                 </div>
                 <ShoppingCart className="h-6 w-6"/>
             </button>
@@ -58,6 +56,15 @@ function Subtotal(props: { totalPrice: number }) {
     </>;
 }
 
+function CartEmpty() {
+    return <div className="flex flex-col items-center">
+        <ShoppingCart className="h-8 w-8" fill="black"/>
+        <span className="mt-2 font-semibold">
+            Your cart is empty
+            </span>
+    </div>;
+}
+
 function CartContent({items, onRemoveProduct, redirectToPayment, closeCart}: CartContentProps) {
     async function action() {
         await redirectToPayment(items)
@@ -68,12 +75,7 @@ function CartContent({items, onRemoveProduct, redirectToPayment, closeCart}: Car
 
 
     if (totalQuantity < 1) {
-        return <div className="flex flex-col items-center ">
-            <ShoppingCart className="h-8 w-8"/>
-            <span className="pt-2 ">
-            Your cart is empty
-            </span>
-        </div>
+        return <CartEmpty/>
     }
 
 
@@ -120,6 +122,7 @@ export default function WrappedCart(props: Props) {
 
     const totalQuantity = props.items.reduce((total, item) => total + item.quantity, 0)
     const totalPrice = props.items.reduce((total, item) => total + item.quantity * item.price.amount, 0)
+
     async function action() {
         await props.redirectToPayment(props.items)
     }
@@ -127,8 +130,9 @@ export default function WrappedCart(props: Props) {
     return <div className="flex flex-row justify-center w-full">
         <div className="w-full">
             <OpenCartButtonV2 totalQuantity={totalQuantity} onToggleCartOpen={toggleCartOpen}/>
-            <div className={"py-3 m-5"}>
-                <form action={action}>
+            <div className={"py-0 m-5"}>
+                {totalQuantity === 0 && <CartEmpty/>}
+                {totalQuantity > 0 && <form action={action}>
 
                     {/*header */}
                     <h3 className="font-semibold text-xl">Your cart</h3>
@@ -144,7 +148,7 @@ export default function WrappedCart(props: Props) {
                     <Subtotal totalPrice={totalPrice}/>
                     {/*go to payment*/}
                     <Button className="mt-4 w-full" type="submit">Checkout</Button>
-                </form>
+                </form>}
                 {/*close checkout*/}
                 <Button className="mt-4 w-full" variant="outline" onClick={() => setCartOpen(false)}>Close</Button>
             </div>
